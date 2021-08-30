@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+    postgres:
+        # needed for Linux users
+        # user: "${uid}:${gid}"
+        ports:
+            - 127.0.0.1:5432:5432
+        volumes:
+            - ./var/docker/volumes/postgres:/var/lib/postgresql/data
+
+    elasticsearch:
+        ports:
+            - 127.0.0.1:9200:9200
+
+    temporal:
+        # needed for Linux users
+        # user: "${uid}:${gid}"
+        ports:
+            - 127.0.0.1:7233:7233
+
+    temporal-web:
+        ports:
+            - 127.0.0.1:8088:8088

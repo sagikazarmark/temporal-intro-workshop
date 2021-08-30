@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+    postgres:
+        image: postgres:9.6
+        environment:
+            POSTGRES_USER: temporal
+            POSTGRES_PASSWORD: temporal
+            POSTGRES_DB: temporal
+
+    elasticsearch:
+        image: elasticsearch:7.10.1
+        environment:
+            - cluster.routing.allocation.disk.threshold_enabled=true
+            - cluster.routing.allocation.disk.watermark.low=512mb
+            - cluster.routing.allocation.disk.watermark.high=256mb
+            - cluster.routing.allocation.disk.watermark.flood_stage=128mb
+            - discovery.type=single-node
+            - ES_JAVA_OPTS=-Xms100m -Xmx100m
+
+    temporal:
+        image: temporalio/auto-setup:1.11.4
+        environment:
+            - DB=postgresql
+            - DB_PORT=5432
+            - POSTGRES_USER=temporal
+            - POSTGRES_PWD=temporal
+            - POSTGRES_SEEDS=postgres
+            - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development_es.yaml
+            - ENABLE_ES=true
+            - ES_SEEDS=elasticsearch
+            - ES_VERSION=v7
+        depends_on:
+            - postgres
+            - elasticsearch
+
+    temporal-admin-tools:
+        image: temporalio/admin-tools:1.11.4
+        environment:
+            - TEMPORAL_CLI_ADDRESS=temporal:7233
+        depends_on:
+            - temporal
+        stdin_open: true
+        tty: true
+
+    temporal-web:
+        image: temporalio/web:1.11.0
+        environment:
+            - TEMPORAL_GRPC_ENDPOINT=temporal:7233
+        depends_on:
+            - temporal

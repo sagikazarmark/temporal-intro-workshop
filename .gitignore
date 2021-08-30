@@ -1,0 +1,4 @@
+/bin/
+/build/
+/docker-compose.override.yml
+/var/
