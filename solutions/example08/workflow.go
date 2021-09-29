@@ -1,59 +1,39 @@
 package example08
 
 import (
-	"errors"
 	"time"
 
 	"go.temporal.io/sdk/workflow"
 )
 
 type Input struct {
-	Numbers []int
+	Number int
 }
 
 type Output struct {
-	Count     int
-	CountOdd  int
-	CountEven int
-	Sum       int
+	Result int
 }
 
 func Workflow(ctx workflow.Context, input Input) (Output, error) {
-	workflow.GetLogger(ctx).Info("starting example 08")
+	workflow.GetLogger(ctx).Info("starting example 06")
 
-	output := Output{
-		Count: len(input.Numbers),
-	}
+	result := 1
 
-	if output.Count == 0 {
-		return output, errors.New("no numbers")
-	}
-
-	var currentNumber int
-
-	err := workflow.SetQueryHandler(ctx, "current_number", func() (int, error) {
-		return currentNumber, nil
+	err := workflow.SetQueryHandler(ctx, "current_result", func() (int, error) {
+		return result, nil
 	})
 	if err != nil {
-		return output, err
+		return Output{}, err
 	}
 
-	for _, number := range input.Numbers {
-		currentNumber = number
-
+	for i := 1; i <= input.Number; i++ {
 		workflow.Sleep(ctx, 10*time.Second)
 
-		output.Sum += number
+		result *= i
+	}
 
-		if number%2 == 0 {
-			output.CountEven++
-		} else {
-			output.CountOdd++
-		}
-
-		if number%3 == 0 {
-			workflow.GetLogger(ctx).Info("number divisible by 3", "number", number)
-		}
+	output := Output{
+		Result: result,
 	}
 
 	return output, nil
