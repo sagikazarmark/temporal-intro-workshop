@@ -8,15 +8,11 @@ import (
 )
 
 type Input struct {
-	Numbers int
+	Number int
 }
 
 type Output struct {
-	Numbers   []int
-	Count     int
-	CountOdd  int
-	CountEven int
-	Sum       int
+	Result int
 }
 
 const max = 10
@@ -24,35 +20,31 @@ const max = 10
 func Workflow(ctx workflow.Context, input Input) (Output, error) {
 	workflow.GetLogger(ctx).Info("starting example 06")
 
-	var output Output
+	number := input.Number
 
-	for i := 0; i < input.Numbers; i++ {
+	if number < 1 {
+		workflow.GetLogger(ctx).Info("generating random number")
+
 		encodedNumber := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
 			return rand.Intn(max)
 		})
 
-		var number int
-
 		err := encodedNumber.Get(&number)
 		if err != nil {
-			return output, err
+			return Output{}, err
 		}
+	}
 
-		workflow.Sleep(ctx, 1*time.Second)
+	result := 1
 
-		output.Numbers = append(output.Numbers, number)
-		output.Count++
-		output.Sum += number
+	for i := 1; i <= number; i++ {
+		workflow.Sleep(ctx, 5*time.Second)
 
-		if number%2 == 0 {
-			output.CountEven++
-		} else {
-			output.CountOdd++
-		}
+		result *= i
+	}
 
-		if number%3 == 0 {
-			workflow.GetLogger(ctx).Info("number divisible by 3", "number", number)
-		}
+	output := Output{
+		Result: result,
 	}
 
 	return output, nil
