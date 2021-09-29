@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/sagikazarmark/temporal-intro-workshop/examples/example01"
-	"github.com/sagikazarmark/temporal-intro-workshop/examples/example02"
 	"github.com/sagikazarmark/temporal-intro-workshop/examples/example03"
 	"github.com/sagikazarmark/temporal-intro-workshop/examples/example04"
 	"github.com/sagikazarmark/temporal-intro-workshop/examples/example05"
@@ -20,8 +19,6 @@ import (
 func register(w worker.Registry) {
 	w.RegisterWorkflow(example01.Workflow)
 	w.RegisterWorkflowWithOptions(example01.Workflow, workflow.RegisterOptions{Name: "example01"})
-
-	w.RegisterWorkflowWithOptions(example02.Workflow, workflow.RegisterOptions{Name: "example02"})
 
 	w.RegisterWorkflowWithOptions(example03.Workflow, workflow.RegisterOptions{Name: "example03"})
 
