@@ -3,7 +3,6 @@ package example11
 import (
 	"context"
 	"errors"
-	"time"
 
 	"go.temporal.io/sdk/activity"
 )
@@ -13,7 +12,7 @@ type ActivityInput struct {
 }
 
 type ActivityOutput struct {
-	Even bool
+	Result int
 }
 
 func Activity11(ctx context.Context, input ActivityInput) (ActivityOutput, error) {
@@ -23,9 +22,11 @@ func Activity11(ctx context.Context, input ActivityInput) (ActivityOutput, error
 		return ActivityOutput{}, errors.New("first attempt")
 	}
 
-	if activityInfo.Attempt < 2 {
-		time.Sleep(5 * time.Second)
+	result := 1
+
+	for i := 1; i <= input.Number; i++ {
+		result *= i
 	}
 
-	return ActivityOutput{input.Number%2 == 0}, nil
+	return ActivityOutput{result}, nil
 }
