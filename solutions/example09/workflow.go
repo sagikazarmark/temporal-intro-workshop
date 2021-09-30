@@ -3,6 +3,7 @@ package example09
 import (
 	"time"
 
+	"go.temporal.io/sdk/temporal"
 	"go.temporal.io/sdk/workflow"
 )
 
@@ -26,7 +27,12 @@ func Workflow(ctx workflow.Context, input WorkflowInput) (WorkflowOutput, error)
 		HeartbeatTimeout:       0 * time.Second,
 		WaitForCancellation:    false,
 		ActivityID:             "",
-		RetryPolicy:            nil,
+		RetryPolicy: &temporal.RetryPolicy{
+			InitialInterval:    time.Second,
+			BackoffCoefficient: 1.0,
+			MaximumInterval:    10 * time.Second,
+			MaximumAttempts:    5,
+		},
 	})
 
 	var activityOutput ActivityOutput

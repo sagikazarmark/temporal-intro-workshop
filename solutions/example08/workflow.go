@@ -6,35 +6,35 @@ import (
 	"go.temporal.io/sdk/workflow"
 )
 
-type Input struct {
-	Number int
+type WorkflowInput struct {
+	A int
+	B int
 }
 
-type Output struct {
+type WorkflowOutput struct {
 	Result int
 }
 
-func Workflow(ctx workflow.Context, input Input) (Output, error) {
-	workflow.GetLogger(ctx).Info("starting example 06")
+func Workflow(ctx workflow.Context, input WorkflowInput) (WorkflowOutput, error) {
+	workflow.GetLogger(ctx).Info("starting example 08")
 
-	result := 1
-
-	err := workflow.SetQueryHandler(ctx, "current_result", func() (int, error) {
-		return result, nil
+	ctx = workflow.WithActivityOptions(ctx, workflow.ActivityOptions{
+		TaskQueue:              "workshop",
+		ScheduleToCloseTimeout: 3*time.Second + 3*time.Second,
+		ScheduleToStartTimeout: 3 * time.Second,
+		StartToCloseTimeout:    3 * time.Second,
+		HeartbeatTimeout:       0 * time.Second,
+		WaitForCancellation:    false,
+		ActivityID:             "",
+		RetryPolicy:            nil,
 	})
+
+	var activityOutput ActivityOutput
+
+	err := workflow.ExecuteActivity(ctx, Activity08, ActivityInput{input.A, input.B}).Get(ctx, &activityOutput)
 	if err != nil {
-		return Output{}, err
+		return WorkflowOutput{}, err
 	}
 
-	for i := 1; i <= input.Number; i++ {
-		workflow.Sleep(ctx, 10*time.Second)
-
-		result *= i
-	}
-
-	output := Output{
-		Result: result,
-	}
-
-	return output, nil
+	return WorkflowOutput{activityOutput.Result}, nil
 }

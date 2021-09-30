@@ -1,4 +1,4 @@
-package example05
+package example04
 
 import (
 	"testing"
@@ -24,21 +24,4 @@ func (s *WorkflowTestSuite) SetupTest() {
 
 func (s *WorkflowTestSuite) AfterTest(suiteName, testName string) {
 	s.env.AssertExpectations(s.T())
-}
-
-func (s *WorkflowTestSuite) Test_Success() {
-	s.env.RegisterWorkflow(Workflow)
-	s.env.ExecuteWorkflow(Workflow, Input{5})
-
-	s.Require().True(s.env.IsWorkflowCompleted())
-	s.Require().NoError(s.env.GetWorkflowError())
-
-	var output Output
-	s.Require().NoError(s.env.GetWorkflowResult(&output))
-
-	expectedOutput := Output{
-		Result: 120,
-	}
-
-	s.Equal(expectedOutput, output)
 }

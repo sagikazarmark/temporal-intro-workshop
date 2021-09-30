@@ -1,4 +1,4 @@
-package example04
+package example02
 
 import (
 	"go.temporal.io/sdk/workflow"
@@ -13,7 +13,7 @@ type Output struct {
 }
 
 func Workflow(ctx workflow.Context, input Input) (Output, error) {
-	workflow.GetLogger(ctx).Info("starting example 04")
+	workflow.GetLogger(ctx).Info("starting example 02")
 
 	if input.Number < 1 {
 		workflow.GetLogger(ctx).Info("invalid number", "number", input.Number)

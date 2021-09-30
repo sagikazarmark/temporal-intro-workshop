@@ -1,32 +1,40 @@
 package example07
 
 import (
+	"time"
+
 	"go.temporal.io/sdk/workflow"
 )
 
-func Workflow(ctx workflow.Context) error {
+type Input struct {
+	Number int
+}
+
+type Output struct {
+	Result int
+}
+
+func Workflow(ctx workflow.Context, input Input) (Output, error) {
 	workflow.GetLogger(ctx).Info("starting example 07")
 
-	var number int
+	result := 1
 
-	err := workflow.SetQueryHandler(ctx, "current_number", func() (int, error) {
-		return number, nil
+	err := workflow.SetQueryHandler(ctx, "current_result", func() (int, error) {
+		return result, nil
 	})
 	if err != nil {
-		return err
+		return Output{}, err
 	}
 
-	signalChan := workflow.GetSignalChannel(ctx, "set_number")
+	for i := 1; i <= input.Number; i++ {
+		workflow.Sleep(ctx, 10*time.Second)
 
-	s := workflow.NewSelector(ctx)
-
-	s.AddReceive(signalChan, func(c workflow.ReceiveChannel, more bool) {
-		c.Receive(ctx, &number)
-
-		workflow.GetLogger(ctx).Info("Received number", "number", number)
-	})
-
-	for {
-		s.Select(ctx)
+		result *= i
 	}
+
+	output := Output{
+		Result: result,
+	}
+
+	return output, nil
 }

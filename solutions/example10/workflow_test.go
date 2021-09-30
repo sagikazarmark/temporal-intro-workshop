@@ -31,9 +31,9 @@ func (s *WorkflowTestSuite) Test_Success() {
 	s.env.RegisterWorkflow(Workflow)
 	s.env.RegisterActivity(Activity10)
 
-	s.env.OnActivity(Activity10, mock.Anything, ActivityInput{3, 4}).Return(ActivityOutput{7}, nil)
+	s.env.OnActivity(Activity10, mock.Anything, ActivityInput{5}).Return(ActivityOutput{120}, nil)
 
-	s.env.ExecuteWorkflow(Workflow, WorkflowInput{3, 4})
+	s.env.ExecuteWorkflow(Workflow, WorkflowInput{5})
 
 	s.Require().True(s.env.IsWorkflowCompleted())
 	s.Require().NoError(s.env.GetWorkflowError())
@@ -41,5 +41,9 @@ func (s *WorkflowTestSuite) Test_Success() {
 	var output WorkflowOutput
 	s.Require().NoError(s.env.GetWorkflowResult(&output))
 
-	s.Equal(7, output.Result)
+	expectedOutput := WorkflowOutput{
+		Result: 120,
+	}
+
+	s.Equal(expectedOutput, output)
 }

@@ -1,4 +1,4 @@
-package example05
+package example09
 
 import (
 	"testing"

@@ -14,7 +14,7 @@ type Output struct {
 }
 
 func Workflow(ctx workflow.Context, input Input) (Output, error) {
-	workflow.GetLogger(ctx).Info("starting example 02")
+	workflow.GetLogger(ctx).Info("starting example 01")
 
 	return Output{input.A + input.B}, nil
 }

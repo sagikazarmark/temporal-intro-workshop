@@ -1,51 +1,32 @@
 package example06
 
 import (
-	"math/rand"
-	"time"
-
 	"go.temporal.io/sdk/workflow"
 )
 
-type Input struct {
-	Number int
-}
-
-type Output struct {
-	Result int
-}
-
-const max = 10
-
-func Workflow(ctx workflow.Context, input Input) (Output, error) {
+func Workflow(ctx workflow.Context) error {
 	workflow.GetLogger(ctx).Info("starting example 06")
 
-	number := input.Number
+	var number int
 
-	if number < 1 {
-		workflow.GetLogger(ctx).Info("generating random number")
-
-		encodedNumber := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
-			return rand.Intn(max)
-		})
-
-		err := encodedNumber.Get(&number)
-		if err != nil {
-			return Output{}, err
-		}
+	err := workflow.SetQueryHandler(ctx, "current_number", func() (int, error) {
+		return number, nil
+	})
+	if err != nil {
+		return err
 	}
 
-	result := 1
+	signalChan := workflow.GetSignalChannel(ctx, "set_number")
 
-	for i := 1; i <= number; i++ {
-		workflow.Sleep(ctx, 5*time.Second)
+	s := workflow.NewSelector(ctx)
 
-		result *= i
+	s.AddReceive(signalChan, func(c workflow.ReceiveChannel, more bool) {
+		c.Receive(ctx, &number)
+
+		workflow.GetLogger(ctx).Info("Received number", "number", number)
+	})
+
+	for {
+		s.Select(ctx)
 	}
-
-	output := Output{
-		Result: result,
-	}
-
-	return output, nil
 }

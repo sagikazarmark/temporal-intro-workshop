@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/sagikazarmark/temporal-intro-workshop/examples/example01"
+	"github.com/sagikazarmark/temporal-intro-workshop/examples/example02"
 	"github.com/sagikazarmark/temporal-intro-workshop/examples/example03"
 	"github.com/sagikazarmark/temporal-intro-workshop/examples/example04"
 	"github.com/sagikazarmark/temporal-intro-workshop/examples/example05"
@@ -10,7 +11,6 @@ import (
 	"github.com/sagikazarmark/temporal-intro-workshop/examples/example08"
 	"github.com/sagikazarmark/temporal-intro-workshop/examples/example09"
 	"github.com/sagikazarmark/temporal-intro-workshop/examples/example10"
-	"github.com/sagikazarmark/temporal-intro-workshop/examples/example11"
 	"go.temporal.io/sdk/activity"
 	"go.temporal.io/sdk/worker"
 	"go.temporal.io/sdk/workflow"
@@ -19,6 +19,8 @@ import (
 func register(w worker.Registry) {
 	w.RegisterWorkflow(example01.Workflow)
 	w.RegisterWorkflowWithOptions(example01.Workflow, workflow.RegisterOptions{Name: "example01"})
+
+	w.RegisterWorkflowWithOptions(example02.Workflow, workflow.RegisterOptions{Name: "example02"})
 
 	w.RegisterWorkflowWithOptions(example03.Workflow, workflow.RegisterOptions{Name: "example03"})
 
@@ -31,6 +33,8 @@ func register(w worker.Registry) {
 	w.RegisterWorkflowWithOptions(example07.Workflow, workflow.RegisterOptions{Name: "example07"})
 
 	w.RegisterWorkflowWithOptions(example08.Workflow, workflow.RegisterOptions{Name: "example08"})
+	w.RegisterActivity(example08.Activity08)
+	w.RegisterActivityWithOptions(example08.Activity08, activity.RegisterOptions{Name: "example08"})
 
 	w.RegisterWorkflowWithOptions(example09.Workflow, workflow.RegisterOptions{Name: "example09"})
 	w.RegisterActivity(example09.Activity09)
@@ -39,8 +43,4 @@ func register(w worker.Registry) {
 	w.RegisterWorkflowWithOptions(example10.Workflow, workflow.RegisterOptions{Name: "example10"})
 	w.RegisterActivity(example10.Activity10)
 	w.RegisterActivityWithOptions(example10.Activity10, activity.RegisterOptions{Name: "example10"})
-
-	w.RegisterWorkflowWithOptions(example11.Workflow, workflow.RegisterOptions{Name: "example11"})
-	w.RegisterActivity(example11.Activity11)
-	w.RegisterActivityWithOptions(example11.Activity11, activity.RegisterOptions{Name: "example11"})
 }
