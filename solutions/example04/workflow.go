@@ -5,8 +5,7 @@ import (
 )
 
 type Input struct {
-	A int
-	B int
+	Number int
 }
 
 type Output struct {
@@ -16,5 +15,19 @@ type Output struct {
 func Workflow(ctx workflow.Context, input Input) (Output, error) {
 	workflow.GetLogger(ctx).Info("starting example 04")
 
-	return Output{input.A + input.B}, nil
+	if input.Number < 1 {
+		workflow.GetLogger(ctx).Info("invalid number", "number", input.Number)
+	}
+
+	result := 1
+
+	for i := 1; i <= input.Number; i++ {
+		result *= i
+	}
+
+	output := Output{
+		Result: result,
+	}
+
+	return output, nil
 }

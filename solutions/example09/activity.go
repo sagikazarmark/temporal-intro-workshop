@@ -2,6 +2,9 @@ package example09
 
 import (
 	"context"
+	"errors"
+
+	"go.temporal.io/sdk/activity"
 )
 
 type ActivityInput struct {
@@ -14,5 +17,11 @@ type ActivityOutput struct {
 }
 
 func Activity09(ctx context.Context, input ActivityInput) (ActivityOutput, error) {
+	activityInfo := activity.GetInfo(ctx)
+
+	if activityInfo.Attempt < 3 {
+		return ActivityOutput{}, errors.New("attempts under 3")
+	}
+
 	return ActivityOutput{input.A + input.B}, nil
 }

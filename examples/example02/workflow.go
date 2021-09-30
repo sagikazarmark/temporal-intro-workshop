@@ -5,5 +5,7 @@ import (
 )
 
 func Workflow(ctx workflow.Context) error {
+	workflow.GetLogger(ctx).Info("starting example 02")
+
 	return nil
 }

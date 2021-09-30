@@ -1,59 +1,32 @@
 package example06
 
 import (
-	"math/rand"
-	"time"
-
 	"go.temporal.io/sdk/workflow"
 )
 
-type Input struct {
-	Numbers int
-}
-
-type Output struct {
-	Numbers   []int
-	Count     int
-	CountOdd  int
-	CountEven int
-	Sum       int
-}
-
-const max = 10
-
-func Workflow(ctx workflow.Context, input Input) (Output, error) {
+func Workflow(ctx workflow.Context) error {
 	workflow.GetLogger(ctx).Info("starting example 06")
 
-	var output Output
+	var number int
 
-	for i := 0; i < input.Numbers; i++ {
-		encodedNumber := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
-			return rand.Intn(max)
-		})
-
-		var number int
-
-		err := encodedNumber.Get(&number)
-		if err != nil {
-			return output, err
-		}
-
-		workflow.Sleep(ctx, 1*time.Second)
-
-		output.Numbers = append(output.Numbers, number)
-		output.Count++
-		output.Sum += number
-
-		if number%2 == 0 {
-			output.CountEven++
-		} else {
-			output.CountOdd++
-		}
-
-		if number%3 == 0 {
-			workflow.GetLogger(ctx).Info("number divisible by 3", "number", number)
-		}
+	err := workflow.SetQueryHandler(ctx, "current_number", func() (int, error) {
+		return number, nil
+	})
+	if err != nil {
+		return err
 	}
 
-	return output, nil
+	signalChan := workflow.GetSignalChannel(ctx, "set_number")
+
+	s := workflow.NewSelector(ctx)
+
+	s.AddReceive(signalChan, func(c workflow.ReceiveChannel, more bool) {
+		c.Receive(ctx, &number)
+
+		workflow.GetLogger(ctx).Info("Received number", "number", number)
+	})
+
+	for {
+		s.Select(ctx)
+	}
 }

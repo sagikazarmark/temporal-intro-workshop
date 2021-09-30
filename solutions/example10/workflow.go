@@ -8,8 +8,7 @@ import (
 )
 
 type WorkflowInput struct {
-	A int
-	B int
+	Number int
 }
 
 type WorkflowOutput struct {
@@ -37,7 +36,7 @@ func Workflow(ctx workflow.Context, input WorkflowInput) (WorkflowOutput, error)
 
 	var activityOutput ActivityOutput
 
-	err := workflow.ExecuteActivity(ctx, Activity10, ActivityInput{input.A, input.B}).Get(ctx, &activityOutput)
+	err := workflow.ExecuteActivity(ctx, Activity10, ActivityInput{input.Number}).Get(ctx, &activityOutput)
 	if err != nil {
 		return WorkflowOutput{}, err
 	}

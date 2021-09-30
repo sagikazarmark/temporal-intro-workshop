@@ -1,60 +1,40 @@
 package example08
 
 import (
-	"errors"
 	"time"
 
 	"go.temporal.io/sdk/workflow"
 )
 
-type Input struct {
-	Numbers []int
+type WorkflowInput struct {
+	A int
+	B int
 }
 
-type Output struct {
-	Count     int
-	CountOdd  int
-	CountEven int
-	Sum       int
+type WorkflowOutput struct {
+	Result int
 }
 
-func Workflow(ctx workflow.Context, input Input) (Output, error) {
+func Workflow(ctx workflow.Context, input WorkflowInput) (WorkflowOutput, error) {
 	workflow.GetLogger(ctx).Info("starting example 08")
 
-	output := Output{
-		Count: len(input.Numbers),
-	}
-
-	if output.Count == 0 {
-		return output, errors.New("no numbers")
-	}
-
-	var currentNumber int
-
-	err := workflow.SetQueryHandler(ctx, "current_number", func() (int, error) {
-		return currentNumber, nil
+	ctx = workflow.WithActivityOptions(ctx, workflow.ActivityOptions{
+		TaskQueue:              "workshop",
+		ScheduleToCloseTimeout: 3*time.Second + 3*time.Second,
+		ScheduleToStartTimeout: 3 * time.Second,
+		StartToCloseTimeout:    3 * time.Second,
+		HeartbeatTimeout:       0 * time.Second,
+		WaitForCancellation:    false,
+		ActivityID:             "",
+		RetryPolicy:            nil,
 	})
+
+	var activityOutput ActivityOutput
+
+	err := workflow.ExecuteActivity(ctx, Activity08, ActivityInput{input.A, input.B}).Get(ctx, &activityOutput)
 	if err != nil {
-		return output, err
+		return WorkflowOutput{}, err
 	}
 
-	for _, number := range input.Numbers {
-		currentNumber = number
-
-		workflow.Sleep(ctx, 10*time.Second)
-
-		output.Sum += number
-
-		if number%2 == 0 {
-			output.CountEven++
-		} else {
-			output.CountOdd++
-		}
-
-		if number%3 == 0 {
-			workflow.GetLogger(ctx).Info("number divisible by 3", "number", number)
-		}
-	}
-
-	return output, nil
+	return WorkflowOutput{activityOutput.Result}, nil
 }

@@ -32,30 +32,24 @@ You can run a workflow using the CLI with the following command:
 tctl workflow run --taskqueue workshop --execution_timeout 60 --workflow_type WORKFLOW_TYPE -i 'arg1 arg2...'
 ```
 
-For example, running the first example looks like this:
-
-```bash
-tctl workflow run --taskqueue workshop --execution_timeout 60 --workflow_type example01 -i '1' -i '3'
-```
-
 As a best practice, workflows generally have a single input struct (to remain compatible with other languages).
 By default, Temporal uses JSON encoding, so such workflow execution looks like this:
 
 ```bash
-tctl workflow run --taskqueue workshop --execution_timeout 60 --workflow_type example02 -i '{"A": 1, "B": 2}'
+tctl workflow run --taskqueue workshop --execution_timeout 60 --workflow_type example01 -i '{"A": 1, "B": 2}'
 ```
 
 You can shorten the command a lot by using shorthands for commands and options:
 
 ```bash
-tctl wf run --tq workshop --et 60 --wt example01 -i '1' -i '3'
+tctl wf run --tq workshop --et 60 --wt example01 -i '{"A": 1, "B": 2}'
 ```
 
 Last, but not least, if you want to start a workflow without waiting for its result,
 you can do so by using the `start` command instead of `run`:
 
 ```bash
-tctl wf start --tq workshop --et 60 --wt example01 -i '1' -i '3'
+tctl wf start --tq workshop --et 60 --wt example01 -i '{"A": 1, "B": 2}'
 ```
 
 

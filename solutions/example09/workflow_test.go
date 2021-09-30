@@ -1,8 +1,9 @@
-package example04
+package example09
 
 import (
 	"testing"
 
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 	"go.temporal.io/sdk/testsuite"
 )
@@ -28,17 +29,17 @@ func (s *WorkflowTestSuite) AfterTest(suiteName, testName string) {
 
 func (s *WorkflowTestSuite) Test_Success() {
 	s.env.RegisterWorkflow(Workflow)
-	s.env.ExecuteWorkflow(Workflow, Input{5})
+	s.env.RegisterActivity(Activity09)
+
+	s.env.OnActivity(Activity09, mock.Anything, ActivityInput{3, 4}).Return(ActivityOutput{7}, nil)
+
+	s.env.ExecuteWorkflow(Workflow, WorkflowInput{3, 4})
 
 	s.Require().True(s.env.IsWorkflowCompleted())
 	s.Require().NoError(s.env.GetWorkflowError())
 
-	var output Output
+	var output WorkflowOutput
 	s.Require().NoError(s.env.GetWorkflowResult(&output))
 
-	expectedOutput := Output{
-		Result: 120,
-	}
-
-	s.Equal(expectedOutput, output)
+	s.Equal(7, output.Result)
 }

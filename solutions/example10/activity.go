@@ -8,8 +8,7 @@ import (
 )
 
 type ActivityInput struct {
-	A int
-	B int
+	Number int
 }
 
 type ActivityOutput struct {
@@ -19,9 +18,15 @@ type ActivityOutput struct {
 func Activity10(ctx context.Context, input ActivityInput) (ActivityOutput, error) {
 	activityInfo := activity.GetInfo(ctx)
 
-	if activityInfo.Attempt < 3 {
-		return ActivityOutput{}, errors.New("attempts under 3")
+	if activityInfo.Attempt < 1 {
+		return ActivityOutput{}, errors.New("first attempt")
 	}
 
-	return ActivityOutput{input.A + input.B}, nil
+	result := 1
+
+	for i := 1; i <= input.Number; i++ {
+		result *= i
+	}
+
+	return ActivityOutput{result}, nil
 }
