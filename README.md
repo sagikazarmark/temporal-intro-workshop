@@ -2,6 +2,8 @@
 
 This repository contains example code for my [Temporal Intro Workshop](https://sagikazarmark.hu/slides/workshops/temporal-intro).
 
+Record: https://youtu.be/UwdGmdTO3Ts
+
 
 ## Prerequisites
 
