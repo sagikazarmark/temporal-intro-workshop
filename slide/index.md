@@ -1,7 +1,15 @@
 ---
 title: Temporal intro workshop
 theme: sky
- highlightTheme: monokai
+highlightTheme: monokai
+separator: "\n---\n"
+verticalSeparator: "\n--\n"
+revealOptions:
+    controls: true
+    progress: true
+    history: true
+    hash: true
+    transition: "slide"
 ---
 
 ![Temporal logo](img/temporal-logo.svg)
