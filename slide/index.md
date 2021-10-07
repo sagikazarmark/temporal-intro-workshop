@@ -1,6 +1,7 @@
 ---
 title: Temporal intro workshop
 theme: sky
+ highlightTheme: monokai
 ---
 
 ![Temporal logo](img/temporal-logo.svg)
