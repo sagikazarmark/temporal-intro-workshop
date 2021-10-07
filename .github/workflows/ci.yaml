@@ -24,3 +24,28 @@ jobs:
 
       - name: Test
         run: go test -v ./...
+
+  slide:
+    name: Slide
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install reveal-md
+        run: npm install -g reveal-md
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: reveal-md --highlight-theme monokai --static public/ --static-dirs=slide/img slide/
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
