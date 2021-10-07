@@ -2,5 +2,6 @@
     "controls": true,
     "progress": true,
     "history": true,
-    "hash": true
+    "hash": true,
+    "transition": "slide"
 }
