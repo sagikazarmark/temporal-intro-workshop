@@ -1,6 +1,6 @@
 # Temporal Intro Workshop
 
-This repository contains example code for my [Temporal Intro Workshop](https://sagikazarmark.github.io/temporal-intro-workshop/).
+This repository contains example code for my [Temporal Intro Workshop](https://sagikazarmark.github.io/temporal-intro-workshop/). You can create your own Workshop with [my Workshop template](https://github.com/sagikazarmark/workshop-template).
 
 Record: https://youtu.be/UwdGmdTO3Ts
 
