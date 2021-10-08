@@ -40,7 +40,11 @@ worker: ## Start the worker
 test: ## Run tests
 	go test ./...
 
+.PHONY: slides
+slides: ## Open slides in the browser
+	reveal-md slides/index.md -w
+
 .PHONY: help
 .DEFAULT_GOAL := help
 help:
-	@grep -h -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -h -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-10s\033[0m %s\n", $$1, $$2}'
