@@ -43,7 +43,6 @@ jobs:
               throw err;
             }
 
-
       - name: Build
         run: reveal-md --static public/ --static-dirs slides/assets  --absolute-url ${{ steps.pages_url.outputs.result }} slides/index.md
 
