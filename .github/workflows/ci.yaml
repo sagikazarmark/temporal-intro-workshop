@@ -42,7 +42,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build
-        run: reveal-md --static public/ --static-dirs=slide/assets slide/index.md
+        run: reveal-md --static public/ --static-dirs=slides/assets slides/index.md
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
