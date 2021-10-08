@@ -12,7 +12,7 @@ revealOptions:
     transition: "slide"
 ---
 
-![Temporal logo](img/temporal-logo.svg)
+![Temporal logo](assets/img/temporal-logo.svg)
 ## Intro workshop
 
 ---
@@ -41,7 +41,7 @@ Long running, complex interactions...
 
 ## Example
 
-<img src="img/interaction.svg" alt="Interaction example" class="image stretch">
+<img src="assets/img/interaction.svg" alt="Interaction example" class="image stretch">
 
 --
 
@@ -63,7 +63,7 @@ func placeOrder(o Order) {
 
 ## Failure
 
-<img src="img/interaction-failure.svg" alt="Interaction failure" class="image stretch">
+<img src="assets/img/interaction-failure.svg" alt="Interaction failure" class="image stretch">
 
 --
 
@@ -91,7 +91,7 @@ func placeOrder(o Order) {
 
 ## Queues FTW
 
-<img src="img/interaction-with-queues.svg" alt="Interaction with queues" class="image stretch">
+<img src="assets/img/interaction-with-queues.svg" alt="Interaction with queues" class="image stretch">
 
 --
 
@@ -104,13 +104,13 @@ func placeOrder(o Order) {
 
 ## State!
 
-<img src="img/interaction-state.svg" alt="Interaction state" class="image stretch">
+<img src="assets/img/interaction-state.svg" alt="Interaction state" class="image stretch">
 
 --
 
 ## Reinventing wheels
 
-<img src="img/reinventing-wheels.png" alt="Reinventing wheels" class="image stretch">
+<img src="assets/img/reinventing-wheels.png" alt="Reinventing wheels" class="image stretch">
 
 *Source: [StackOverflow Blog](https://stackoverflow.blog/2020/11/23/the-macro-problem-with-microservices/)* <!-- .element style="font-size: 13px" -->
 <!-- .element style="margin-top: -30px;" -->
@@ -172,7 +172,7 @@ func placeOrder(o Order) {
 
 --
 
-<img src="img/temporal-high-level-abstracted-relationships.png" alt="Temporal highlevel" class="image stretch">
+<img src="assets/img/temporal-high-level-abstracted-relationships.png" alt="Temporal highlevel" class="image stretch">
 
 *Source: [Temporal docs](https://docs.temporal.io/docs/server-architecture#overview)* <!-- .element style="font-size: 13px" -->
 <!-- .element style="margin-top: -30px;" -->
@@ -219,7 +219,7 @@ func placeOrder(o Order) {
 
 --
 
-<img src="img/worker-queues.svg" alt="Worker queues" class="image stretch">
+<img src="assets/img/worker-queues.svg" alt="Worker queues" class="image stretch">
 
 --
 
