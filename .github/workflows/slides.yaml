@@ -22,8 +22,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Get GitHub pages URL
+        uses: actions/github-script@v5
+        id: pages_url
+        with:
+          result-encoding: string
+          script: |
+            try {
+              const pages = await github.rest.repos.getPages({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+
+              return pages.data.html_url;
+            } catch(err) {
+              if (err.status == 404) {
+                return `https://${context.repo.owner}.github.io/${context.repo.repo}/`;
+              }
+
+              throw err;
+            }
+
+
       - name: Build
-        run: reveal-md --static public/ --static-dirs=slides/assets slides/index.md
+        run: reveal-md --static public/ --static-dirs slides/assets  --absolute-url ${{ steps.pages_url.outputs.result }} slides/index.md
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
