@@ -1,0 +1,101 @@
+{
+  "nodes": {
+    "flake-compat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1627913399,
+        "narHash": "sha256-hY8g6H2KFL8ownSiFeMOjwPC8P0ueXpCVEbxgda3pko=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "12c64ca55c1014cdc1b16ed5a804aa8576601ff2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1631561581,
+        "narHash": "sha256-3VQMV5zvxaVLvqqUrNz3iJelLw30mIVSfZmAaauM3dA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "7e5bf3925f6fbdfaf50a2a7ca0be2879c4261d19",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1634172192,
+        "narHash": "sha256-FBF4U/T+bMg4sEyT/zkgasvVquGzgdAf4y8uCosKMmo=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "2cf9db0e3d45b9d00f16f2836cb1297bcadc475e",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-unstable",
+        "type": "indirect"
+      }
+    },
+    "reveal-md-flake": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "reveal-md-src": "reveal-md-src"
+      },
+      "locked": {
+        "lastModified": 1634378715,
+        "narHash": "sha256-HB2QjZ+vz9CDSl5+AjKLM1WtEOxAOcWBuc6TTXvnNAs=",
+        "owner": "sagikazarmark",
+        "repo": "reveal-md-flake",
+        "rev": "10c7fb74c3e429cbd31e223b69f8e367ecb5e52e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sagikazarmark",
+        "repo": "reveal-md-flake",
+        "type": "github"
+      }
+    },
+    "reveal-md-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1629124562,
+        "narHash": "sha256-K1EaciRPCA+y1yvpLIK6I0H0Q0K6HDlLTofUTEF8iHQ=",
+        "owner": "webpro",
+        "repo": "reveal-md",
+        "rev": "06b9605bd9cf7bb2186b263df141d76d50aa09ac",
+        "type": "github"
+      },
+      "original": {
+        "owner": "webpro",
+        "ref": "5.1.3",
+        "repo": "reveal-md",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "flake-compat": "flake-compat",
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs",
+        "reveal-md-flake": "reveal-md-flake"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
