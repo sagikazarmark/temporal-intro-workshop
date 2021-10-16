@@ -10,6 +10,10 @@ Record: https://youtu.be/UwdGmdTO3Ts
 1. Git, Make, etc.
 2. Make sure you have the latest [Go](https://golang.org/) and [Docker](https://www.docker.com/get-started) installed
 
+Alternatively, install [nix](https://nixos.org) and [direnv](https://direnv.net), then run `direnv allow` once you checked out the repository.
+
+_Note: you should still install Docker using your native package manager._
+
 
 ## Usage
 
@@ -98,6 +102,14 @@ Once you are finished with the workshop, you can clean up all resources (contain
 ```bash
 make down
 ```
+
+
+## Development
+
+Make sure [nix](https://nixos.org) and [direnv](https://direnv.net) are installed, then run `direnv allow`.
+
+To work on the slides, run `make slides`.
+It will open a browser window and automatically refresh the page when you make changes to the slides.
 
 
 ## License

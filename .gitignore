@@ -1,3 +1,4 @@
+/.direnv/
 /bin/
 /build/
 /docker-compose.override.yml

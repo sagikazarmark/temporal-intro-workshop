@@ -44,6 +44,10 @@ test: ## Run tests
 slides: ## Open slides in the browser
 	reveal-md slides/index.md -w
 
+.PHONY: deps
+deps:
+	npm install -g reveal-md
+
 .PHONY: help
 .DEFAULT_GOAL := help
 help:
