@@ -9,21 +9,22 @@ jobs:
   slide:
     name: Publish
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: nix develop .#ci -c bash {0}
 
     steps:
-      - name: Set up Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
-
-      - name: Install reveal-md
-        run: npm install -g reveal-md
-
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Set up Nix
+        uses: cachix/install-nix-action@v18
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
       - name: Get GitHub pages URL
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         id: pages_url
         with:
           result-encoding: string
@@ -44,7 +45,7 @@ jobs:
             }
 
       - name: Build
-        run: reveal-md --static public/ --static-dirs slides/assets  --absolute-url ${{ steps.pages_url.outputs.result }} slides/index.md
+        run: reveal-md --static public/ --static-dirs slides/assets --absolute-url ${{ steps.pages_url.outputs.result }} slides/index.md
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

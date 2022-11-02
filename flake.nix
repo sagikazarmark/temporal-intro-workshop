@@ -11,14 +11,19 @@
       let
         pkgs = import nixpkgs { inherit system; };
       in
+      rec
       {
-        devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            git
-            gnumake
-            reveal-md
-            go
-          ];
+        devShells = {
+          default = pkgs.mkShell {
+            buildInputs = with pkgs; [
+              git
+              gnumake
+              reveal-md
+              go
+            ];
+          };
+
+          ci = devShells.default;
         };
       });
 }

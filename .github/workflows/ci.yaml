@@ -10,17 +10,19 @@ jobs:
   code:
     name: Code
     runs-on: ubuntu-latest
-    env:
-      GOFLAGS: -mod=readonly
+    defaults:
+      run:
+        shell: nix develop .#ci -c bash {0}
 
     steps:
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.17
-
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Set up Nix
+        uses: cachix/install-nix-action@v18
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
       - name: Test
         run: go test -v ./...
@@ -28,18 +30,19 @@ jobs:
   slides:
     name: Slides
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: nix develop .#ci -c bash {0}
 
     steps:
-      - name: Set up Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
-
-      - name: Install reveal-md
-        run: npm install -g reveal-md
-
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Set up Nix
+        uses: cachix/install-nix-action@v18
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
         run: reveal-md --static public/ --static-dirs slides/assets slides/index.md
