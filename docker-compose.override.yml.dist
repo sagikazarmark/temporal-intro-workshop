@@ -19,6 +19,6 @@ services:
         ports:
             - 127.0.0.1:7233:7233
 
-    temporal-web:
+    temporal-ui:
         ports:
-            - 127.0.0.1:8088:8088
+            - 127.0.0.1:8080:8080

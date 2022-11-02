@@ -26,7 +26,7 @@ _Note: you should still install Docker using your native package manager._
 Alternatively, you can use the following alias for the `tctl` commands instead of opening a new shell:
 
 ```shell
-alias tctl='docker compose exec temporal-admin-tools tctl'
+alias tctl='docker compose exec --profile cli temporal-admin-tools tctl'
 ```
 
 

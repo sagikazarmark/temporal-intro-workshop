@@ -2,14 +2,14 @@ version: "3"
 
 services:
     postgres:
-        image: postgres:9.6
+        image: postgres:13.8
         environment:
             POSTGRES_USER: temporal
             POSTGRES_PASSWORD: temporal
             POSTGRES_DB: temporal
 
     elasticsearch:
-        image: elasticsearch:7.10.1
+        image: elasticsearch:7.16.2
         environment:
             - cluster.routing.allocation.disk.threshold_enabled=true
             - cluster.routing.allocation.disk.watermark.low=512mb
@@ -17,35 +17,40 @@ services:
             - cluster.routing.allocation.disk.watermark.flood_stage=128mb
             - discovery.type=single-node
             - ES_JAVA_OPTS=-Xms100m -Xmx100m
+            - xpack.security.enabled=false
 
     temporal:
-        image: temporalio/auto-setup:1.12.1
+        image: temporalio/auto-setup:1.18.4
         environment:
             - DB=postgresql
             - DB_PORT=5432
             - POSTGRES_USER=temporal
             - POSTGRES_PWD=temporal
             - POSTGRES_SEEDS=postgres
-            - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development_es.yaml
+            - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development-sql.yaml
             - ENABLE_ES=true
             - ES_SEEDS=elasticsearch
             - ES_VERSION=v7
+        volumes:
+            - ./etc/temporal/dynamicconfig:/etc/temporal/config/dynamicconfig
         depends_on:
             - postgres
             - elasticsearch
 
     temporal-admin-tools:
-        image: temporalio/admin-tools:1.12.1
+        image: temporalio/admin-tools:1.18.4
         environment:
             - TEMPORAL_CLI_ADDRESS=temporal:7233
+        profiles:
+            - cli
         depends_on:
             - temporal
         stdin_open: true
         tty: true
 
-    temporal-web:
-        image: temporalio/web:1.11.0
+    temporal-ui:
+        image: temporalio/ui:2.8.1
         environment:
-            - TEMPORAL_GRPC_ENDPOINT=temporal:7233
+            - TEMPORAL_ADDRESS=temporal:7233
         depends_on:
             - temporal
