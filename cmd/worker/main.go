@@ -21,7 +21,7 @@ func init() {
 
 func main() {
 	// Create client
-	c, err := client.NewClient(client.Options{
+	c, err := client.Dial(client.Options{
 		HostPort:  address,
 		Namespace: namespace,
 	})

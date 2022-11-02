@@ -30,7 +30,7 @@ ps: ## Check the status of services services
 
 .PHONY: shell
 shell: ## Start a shell with the Temporal CLI
-	docker compose exec temporal-admin-tools bash
+	docker compose exec --profile cli temporal-admin-tools bash
 
 .PHONY: worker
 worker: ## Start the worker
