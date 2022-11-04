@@ -1,0 +1,5 @@
+.reveal .slides section ol,
+.reveal .slides section dl,
+.reveal .slides section ul {
+    line-height: 1.7;
+}

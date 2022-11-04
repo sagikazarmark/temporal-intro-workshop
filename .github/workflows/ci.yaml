@@ -45,4 +45,4 @@ jobs:
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
-        run: reveal-md --static public/ --static-dirs slides/assets slides/index.md
+        run: make build-slides
