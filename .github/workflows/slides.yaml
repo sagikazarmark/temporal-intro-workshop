@@ -5,9 +5,20 @@ on:
     branches:
       - master
 
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
-  slide:
-    name: Publish
+  build:
+    name: Build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -17,37 +28,31 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+
       - name: Set up Nix
         uses: cachix/install-nix-action@v18
         with:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get GitHub pages URL
-        uses: actions/github-script@v6
-        id: pages_url
-        with:
-          result-encoding: string
-          script: |
-            try {
-              const pages = await github.rest.repos.getPages({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-              });
-
-              return pages.data.html_url;
-            } catch(err) {
-              if (err.status == 404) {
-                return `https://${context.repo.owner}.github.io/${context.repo.repo}/`;
-              }
-
-              throw err;
-            }
-
       - name: Build
-        run: make ABSOLUTE_URL=${{ steps.pages_url.outputs.result }} build-slides
+        run: make ABSOLUTE_URL=${{ steps.pages.outputs.base_url }} build-slides
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./public/
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
