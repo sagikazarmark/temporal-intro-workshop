@@ -46,7 +46,7 @@ slides: ## Open slides in the browser
 
 .PHONY: build-slides
 build-slides:
-	reveal-md --theme slides/theme.css --css slides/custom.css --static public/ --static-dirs slides/assets --absolute-url $ABSOLUTE_URL slides/index.md
+	reveal-md --theme slides/theme.css --css slides/custom.css --static public/ --static-dirs slides/assets --absolute-url ${ABSOLUTE_URL} slides/index.md
 
 .PHONY: deps
 deps:
