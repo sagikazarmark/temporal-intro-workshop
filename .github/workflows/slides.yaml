@@ -45,7 +45,7 @@ jobs:
             }
 
       - name: Build
-        run: reveal-md --static public/ --static-dirs slides/assets --absolute-url ${{ steps.pages_url.outputs.result }} slides/index.md
+        run: make ABSOLUTE_URL=${{ steps.pages_url.outputs.result }} build-slides
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

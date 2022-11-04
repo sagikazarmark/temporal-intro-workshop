@@ -42,7 +42,11 @@ test: ## Run tests
 
 .PHONY: slides
 slides: ## Open slides in the browser
-	reveal-md slides/index.md -w
+	reveal-md --theme slides/theme.css --css slides/custom.css slides/index.md -w
+
+.PHONY: build-slides
+build-slides:
+	reveal-md --theme slides/theme.css --css slides/custom.css --static public/ --static-dirs slides/assets --absolute-url $ABSOLUTE_URL slides/index.md
 
 .PHONY: deps
 deps:
