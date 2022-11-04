@@ -10,6 +10,7 @@ revealOptions:
     history: true
     hash: true
     transition: "slide"
+    slideNumber: false
 ---
 
 ![Temporal logo](assets/img/temporal-logo.svg)
