@@ -22,7 +22,6 @@ revealOptions:
 
 - History
 - Temporal
-- Preparation
 - Workshop
 
 ---
