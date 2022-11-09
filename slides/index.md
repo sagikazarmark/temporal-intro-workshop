@@ -23,8 +23,7 @@ revealOptions:
 - History
 - Temporal
 - Preparation
-- Examples
-- Further reading
+- Workshop
 
 ---
 
@@ -34,11 +33,11 @@ revealOptions:
 
 ## Problem
 
-Long running, complex interactions...
+Long running, complex interactions... <!-- .element: class="fragment" -->
 
-...in distributed systems... <!-- .element: class="fragment" data-fragment-index="1" -->
+...in distributed systems... <!-- .element: class="fragment" -->
 
-...with transactional characteristics. <!-- .element: class="fragment" data-fragment-index="2" -->
+...with transactional characteristics. <!-- .element: class="fragment" -->
 
 --
 
@@ -89,13 +88,6 @@ func placeOrder(o Order) {
     // ...
 }
 ```
-
---
-
-## Requirements
-
-- **Durability:** (function) can run to completion.
-- **Reliability:** (function) execution is recoverable after a failure.
 
 --
 
@@ -161,7 +153,6 @@ func placeOrder(o Order) {
 
 - No *one size fits all* solution (yet)
 - Fragile systems
-- Distributed transactions? (2PC, Saga)
 - Lack of orchestration
 
 --
@@ -169,7 +160,7 @@ func placeOrder(o Order) {
 ## Lack of orchestration
 
 - Fractured business processes
-- Changes affect a lot of components
+- Tight coupling between components
 - Cancellations?
 - Compensating actions?
 - Additional interactions?
@@ -499,7 +490,9 @@ Use [deterministic wrappers](https://docs.temporal.io/application-development/fo
 
 ## Forbidden in general
 
-Accessing external systems (usually over network)
+- Accessing external systems (usually over network)
+- Accessing the filesystem
+- Generating random values
 
 --
 
@@ -515,50 +508,48 @@ Communicating with a running workflow.
 
 --
 
-## Workflow replay
+## Example 7
 
-1. Workflow is scheduled to run on a worker
-1. Workflow returns with a list of **commands**
-1. Temporal records the commands in the history in the form of **events** (eg. `StartTimer` -> `TimerStarted`)
-1. Workflow gets scheduled again
-1. Worker _replays_ the history by calling the workflow function
-1. Workflow returns with a list of commands
-1. ...
-1. Workflow ends
+Write a query handler (for your workflow from examples 2, 4) that returns the current result in the loop.
+
+**Tip:** Add sleep at the beginning of the loop so you have time to query it using the CLI.
+
+--
+
+## Log-based execution
+
+- Record a history of events
+- _Replay_ events to get to the current state
+
+--
+
+<img src="assets/img/temporal-workflow-task.svg" alt="Temporal workflow task" class="stretch">
+
+--
+
+<img src="assets/img/temporal-workflow-task-loop.svg" alt="Temporal workflow task loop" class="stretch">
 
 --
 
 ## Workflow replay
 
-```go
-func Workflow(ctx workflow.Context, input Input) (Output, error) {
-    encodedNumber := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
-        return rand.Intn(max)
-    })
+```go [|2|4|6]
+func Workflow(ctx workflow.Context) error {
+    foo := workflow.ExecuteActivity(ctx, "foo")
 
-    sum := input.Number + number
+    workflow.Sleep(ctx, 10 * time.Second)
 
-    workflow.Sleep(ctx, 1*time.Second)
-
-    return Output{sum}, nil
+    workflow.ExecuteActivity(ctx, "bar", foo)
 }
 
 ```
 
 --
 
-## Example 7
-
-Write a query handler (for your workflow from examples 2, 4) that returns the current result in the loop.
-
-Add sleep at the beginning of the loop so you have time to query it using the CLI.
-
---
-
 ## Recap
 
 - Workflows implement business logic
-- They **MUST** be deterministic
+- They **MUST** be deterministic (due to log-based execution)
 
 --
 
@@ -589,7 +580,15 @@ _[Documentation: Workflow development in Go](https://docs.temporal.io/go/develop
 
 --
 
-## Example 8 & 9
+## Example 8
+
+Simple activity function.
+
+--
+
+## Example 9
+
+Activity retry.
 
 --
 
@@ -608,9 +607,9 @@ Rewrite the factorial calculation (based on examples 2, 4, 7) as an activity (wi
 - Async completion
 - Local activities
 
-https://docs.temporal.io/docs/concepts/activities
+_[Documentation: Activities](https://docs.temporal.io/activities)_
 
-https://docs.temporal.io/docs/go/introduction
+_[Documentation: Activity development in Go](https://docs.temporal.io/go/develop-activities)_
 
 ---
 
@@ -622,21 +621,17 @@ https://stackoverflow.blog/2020/11/23/the-macro-problem-with-microservices/
 
 --
 
-https://docs.temporal.io/docs/concepts/introduction
+[Documentation: Concepts](https://docs.temporal.io/concepts)
 
-https://docs.temporal.io/docs/reference/glossary
-
---
-
-https://docs.temporal.io/application-development
+[Documentation: Glossary](https://docs.temporal.io/glossary)
 
 --
 
-https://docs.temporal.io/docs/samples-library
+[Documentation: Developer's guide](https://docs.temporal.io/application-development/)
 
 --
 
-https://docs.temporal.io/blog/tags/go-ecommerce-tutorial/
+[Temporal learning materials](https://learn.temporal.io/)
 
 ---
 

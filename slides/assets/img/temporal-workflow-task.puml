@@ -1,0 +1,21 @@
+@startuml
+participant User
+participant Temporal as "Temporal Cluster"
+participant Worker
+
+User -> Temporal: Start Workflow
+
+Temporal -> Temporal: Schedule Workflow Task
+
+Worker -> Temporal: Poll for Workflow Task
+Temporal -> Worker: Receive Workflow Task
+
+activate Worker
+Worker -> Worker: Execute Workflow function
+Worker -> Temporal: Return Commands
+deactivate Worker
+note right: Workflow function\nterminates
+
+Temporal -> Temporal: Execute Commands
+Temporal -> Temporal: Record Events in the history
+@enduml
