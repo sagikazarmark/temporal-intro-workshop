@@ -3,3 +3,7 @@
 .reveal .slides section ul {
     line-height: 1.7;
 }
+
+.reveal .slides section table.valign-middle > tbody > tr > td {
+    vertical-align: middle;
+}
