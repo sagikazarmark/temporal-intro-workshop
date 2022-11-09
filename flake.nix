@@ -32,10 +32,20 @@
               gnumake
               reveal-md
               go
+
+              temporalite
+              temporal-cli
             ];
           };
 
-          ci = devShells.default;
+          ci = pkgs.mkShell {
+            buildInputs = with pkgs; [
+              git
+              gnumake
+              reveal-md
+              go
+            ];
+          };
         };
       });
 }
