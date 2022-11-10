@@ -49,6 +49,10 @@ build-slides: ABSOLUTE_URL := http://localhost
 build-slides:
 	reveal-md --template etc/reveal/template/reveal.html --theme slides/theme.css --css slides/custom.css --static public/ --static-dirs slides/assets --absolute-url ${ABSOLUTE_URL} slides/index.md
 
+.PHONY: print-slides
+print-slides:
+	decktape --size='2048x1536' https://sagikazarmark.github.io/temporal-intro-workshop slides.pdf
+
 .PHONY: deps
 deps:
 	npm install -g reveal-md

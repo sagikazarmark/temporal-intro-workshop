@@ -19,6 +19,7 @@
           overlays = [
             (final: prev: {
               reveal-md = nur.packages.${system}.reveal-md;
+              decktape = nur.packages.${system}.decktape;
             })
           ];
         };

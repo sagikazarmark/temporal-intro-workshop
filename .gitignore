@@ -3,4 +3,5 @@
 /build/
 /docker-compose.override.yml
 /public/
+/slides.pdf
 /var/
