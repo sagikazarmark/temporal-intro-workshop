@@ -108,7 +108,7 @@ func placeOrder(o Order) {
 
 --
 
-## Faliure with queues
+## Failure with queues
 
 <img src="assets/img/interaction-with-queues-failure.svg" alt="Interaction failure with queues" class="stretch">
 
