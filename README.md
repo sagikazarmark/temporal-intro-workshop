@@ -4,6 +4,8 @@ This repository contains example code for my [Temporal Intro Workshop](https://s
 
 Record: https://youtu.be/UwdGmdTO3Ts
 
+Record (HUN): https://youtu.be/IGAnWQ52xOI
+
 
 ## Prerequisites
 
