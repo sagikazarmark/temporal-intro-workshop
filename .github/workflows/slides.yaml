@@ -42,7 +42,7 @@ jobs:
         run: make ABSOLUTE_URL=${{ steps.pages.outputs.base_url }} build-slides
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v2
         with:
           path: ./public/
 
